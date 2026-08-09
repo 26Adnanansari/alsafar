@@ -1,0 +1,159 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 60 20% 97%;
+    --foreground: 60 3% 11%;
+    --border: 60 10% 88%;
+    --input: 60 10% 88%;
+    --ring: 152 68% 18%;
+  }
+
+  * { @apply border-border; }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    /* Mobile-first: ensure proper text rendering */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1, h2, h3, h4 { @apply font-display; }
+
+  /* ── MOBILE TOUCH TARGETS (Apple/Google standard = 44px min) ── */
+  button, a { min-height: 44px; }
+  input, select, textarea { 
+    @apply text-base; /* Prevents iOS zoom on focus */
+    min-height: 48px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  a:focus-visible, button:focus-visible,
+  input:focus-visible, select:focus-visible, textarea:focus-visible {
+    @apply outline-none ring-2 ring-primary ring-offset-2 ring-offset-background;
+  }
+}
+
+/* ── URDU / ARABIC TEXT ── */
+.text-urdu {
+  font-family: var(--font-noto-nastaliq), serif;
+  direction: rtl;
+  line-height: 2.2;
+}
+
+/* ──────────────────────────────────────────
+   HERO ANIMATIONS — keyframe library
+   Each is designed for smooth 60fps on mobile
+────────────────────────────────────────── */
+
+/* Fade up from below — primary entry animation */
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Fade in from left — for side text */
+@keyframes fade-left {
+  from { opacity: 0; transform: translateX(-20px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+/* Fade in from right — for cards / imagery */
+@keyframes fade-right {
+  from { opacity: 0; transform: translateX(20px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+/* Gentle vertical float loop — for decorative elements */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-8px); }
+}
+
+/* Shimmer / glint — for gold dividers & badges */
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+/* Slow infinite rotate — for geometric SVG accents */
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* Scale pulse — for trust indicators / badge counts */
+@keyframes pulse-scale {
+  0%, 100% { transform: scale(1); }
+  50%       { transform: scale(1.05); }
+}
+
+/* Ticker / marquee scroll */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* ── ANIMATION UTILITY CLASSES ── */
+.animate-fade-up        { animation: fade-up 0.6s ease-out both; }
+.animate-fade-left      { animation: fade-left 0.6s ease-out both; }
+.animate-fade-right     { animation: fade-right 0.6s ease-out both; }
+.animate-float          { animation: float 4s ease-in-out infinite; }
+.animate-spin-slow      { animation: spin-slow 20s linear infinite; }
+.animate-pulse-scale    { animation: pulse-scale 2s ease-in-out infinite; }
+.animate-marquee        { animation: marquee 20s linear infinite; }
+
+/* Stagger delay helpers — chain multiple elements */
+.delay-100  { animation-delay: 100ms; }
+.delay-200  { animation-delay: 200ms; }
+.delay-300  { animation-delay: 300ms; }
+.delay-400  { animation-delay: 400ms; }
+.delay-500  { animation-delay: 500ms; }
+.delay-600  { animation-delay: 600ms; }
+.delay-700  { animation-delay: 700ms; }
+
+/* ── GOLD SHIMMER TEXT ── */
+.text-shimmer {
+  background: linear-gradient(90deg, #C9A227 0%, #E6C866 40%, #C9A227 60%, #8B6914 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer 3s linear infinite;
+}
+
+/* ── GLASS CARD ── */
+.glass {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+/* ── GALLERY CARD HOVER LIFT ── */
+.gallery-card {
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+              box-shadow 0.35s ease;
+}
+.gallery-card:hover {
+  transform: translateY(-6px) scale(1.01);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.18);
+}
+
+/* ── SECTION DIVIDER ── */
+.section-divider {
+  width: 48px;
+  height: 3px;
+  background: linear-gradient(90deg, #C9A227, #E6C866);
+  border-radius: 99px;
+}
