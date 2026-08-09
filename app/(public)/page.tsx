@@ -7,6 +7,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { PackageCard } from "@/components/packages/package-card";
 import { createClient } from "@/lib/supabase/server";
+import { StatsStrip } from "@/components/shared/stats-strip";
+import { FAQSection } from "@/components/shared/faq-section";
 import type { Package } from "@/lib/types";
 
 // ─── Mock packages shown before SQL schema is set up ───────────────────────
@@ -120,16 +122,6 @@ function buildGallery(packages: Package[]) {
   });
 }
 
-// ─── Trust strip items ───────────────────────────────────────────────────────
-const TRUST = [
-  { icon: ShieldCheck, label: "Licensed Agency",     desc: "Govt. approved IATA operator" },
-  { icon: CreditCard,  label: "Easy Installments",   desc: "Pay in flexible monthly plans" },
-  { icon: Headset,     label: "24/7 On-Ground Help", desc: "Guides with you in Makkah & Madinah" },
-  { icon: Star,        label: "1,000+ Served",        desc: "Trusted by families since 2018" },
-];
-
-// Gallery is built dynamically in the page component from package cover images
-
 export default async function HomePage() {
   const packages = await getFeaturedPackages();
   const GALLERY  = buildGallery(packages);
@@ -138,35 +130,31 @@ export default async function HomePage() {
     <div className="overflow-x-hidden bg-[#FAF9F4]">
 
       {/* ════════════════════════════════════════════════════════
-          HERO — premium animated section
+          HERO — premium background video + glass cards
           ════════════════════════════════════════════════════════ */}
-      <section className="relative min-h-[92svh] overflow-hidden bg-gradient-to-br from-[#062215] via-[#0F5132] to-[#083320] flex items-center">
-
-        {/* Decorative background glow blobs */}
-        <div className="pointer-events-none absolute inset-0">
-          <div className="absolute -right-32 -top-32 h-[600px] w-[600px] rounded-full bg-gold/8 blur-[120px]" />
-          <div className="absolute -bottom-20 -left-20 h-[400px] w-[400px] rounded-full bg-primary/30 blur-[80px]" />
-          {/* Geometric star accent */}
-          <div className="absolute right-8 top-24 opacity-10 animate-spin-slow hidden md:block">
-            <svg width="180" height="180" viewBox="0 0 180 180" fill="none">
-              <polygon points="90,10 110,70 170,70 122,108 140,170 90,133 40,170 58,108 10,70 70,70" fill="#C9A227" />
-            </svg>
-          </div>
-          {/* Subtle dot-grid pattern */}
-          <div
-            className="absolute inset-0 opacity-[0.04]"
-            style={{
-              backgroundImage: "radial-gradient(circle, #fff 1px, transparent 1px)",
-              backgroundSize: "28px 28px",
-            }}
-          />
+      <section className="relative min-h-[92svh] overflow-hidden flex items-center bg-black">
+        
+        {/* Background Video */}
+        <div className="absolute inset-0 z-0">
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="h-full w-full object-cover opacity-55 scale-105 select-none pointer-events-none"
+          >
+            <source src="/images/Hajj_gallery-1.mp4" type="video/mp4" />
+          </video>
+          {/* Heavy gradient overlays to ensure text readability */}
+          <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/60 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/30" />
         </div>
 
         <div className="container relative z-10 py-20 md:py-28">
           <div className="grid items-center gap-12 md:grid-cols-[1.15fr_0.85fr] lg:gap-20">
 
             {/* ── Left column: copy ── */}
-            <div className="flex flex-col gap-6">
+            <div className="flex flex-col gap-6 text-left">
               {/* Brand eyebrow */}
               <div className="animate-fade-up flex items-center gap-2.5">
                 <span className="h-px w-8 bg-gold" />
@@ -176,7 +164,7 @@ export default async function HomePage() {
               </div>
 
               {/* Main heading */}
-              <h1 className="animate-fade-up delay-100 font-display text-4xl font-bold leading-[1.1] text-white sm:text-5xl lg:text-6xl">
+              <h1 className="animate-fade-up delay-100 font-display text-4xl font-bold leading-[1.15] text-white sm:text-5xl lg:text-6xl">
                 Your Sacred<br />
                 Journey{" "}
                 <span className="text-shimmer">Deserves</span>
@@ -185,18 +173,18 @@ export default async function HomePage() {
               </h1>
 
               {/* Urdu sub-tagline */}
-              <p className="animate-fade-up delay-200 font-urdu text-xl text-gold/90">
+              <p className="animate-fade-up delay-200 font-urdu text-2xl text-gold/90 leading-relaxed">
                 ہر قدم پر آپ کے ساتھ
               </p>
 
               {/* Description */}
-              <p className="animate-fade-up delay-300 max-w-lg text-sm leading-relaxed text-white/75 md:text-base">
+              <p className="animate-fade-up delay-300 max-w-lg text-sm leading-relaxed text-white/80 md:text-base">
                 Al-Safar offers transparent Hajj & Umrah packages with verified closest-to-Haram hotels,
                 direct PIA & Emirates flights, and a dedicated ground team in both holy cities.
               </p>
 
               {/* CTA buttons */}
-              <div className="animate-fade-up delay-400 flex flex-col gap-3 sm:flex-row">
+              <div className="animate-fade-up delay-400 flex flex-col gap-3.5 sm:flex-row">
                 <Button
                   size="lg"
                   variant="gold"
@@ -210,7 +198,7 @@ export default async function HomePage() {
                 <Button
                   size="lg"
                   variant="outline"
-                  className="h-13 w-full rounded-xl border-white/25 text-white backdrop-blur-sm hover:bg-white/10 sm:w-auto"
+                  className="h-13 w-full rounded-xl border-white/20 text-white backdrop-blur-md bg-white/5 hover:bg-white/10 sm:w-auto"
                   asChild
                 >
                   <Link href="tel:+92300000000" className="flex items-center justify-center gap-2">
@@ -239,11 +227,11 @@ export default async function HomePage() {
 
             {/* ── Right column: package selector card ── */}
             <div className="animate-fade-right delay-300">
-              <div className="glass rounded-2xl p-7 shadow-2xl">
+              <div className="glass rounded-2xl p-7 shadow-2xl border-white/10">
                 <div className="mb-6 text-center">
                   <p className="font-urdu text-2xl leading-relaxed text-gold">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</p>
                   <h3 className="mt-2 font-display text-base font-semibold text-white">Find Your Package</h3>
-                  <p className="text-xs text-white/50">Choose your journey class</p>
+                  <p className="text-xs text-white/55">Choose your journey class</p>
                 </div>
 
                 <div className="flex flex-col gap-3">
@@ -285,7 +273,7 @@ export default async function HomePage() {
         </div>
 
         {/* Bottom wave separator */}
-        <div className="absolute bottom-0 left-0 right-0">
+        <div className="absolute bottom-0 left-0 right-0 z-10">
           <svg viewBox="0 0 1440 60" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full">
             <path d="M0 60L1440 60L1440 20C1200 60 960 0 720 20C480 40 240 0 0 20L0 60Z" fill="#FAF9F4" />
           </svg>
@@ -293,35 +281,15 @@ export default async function HomePage() {
       </section>
 
       {/* ════════════════════════════════════════════════════════
-          TRUST STRIP
+          ANIMATED STATS STRIP
           ════════════════════════════════════════════════════════ */}
-      <section className="bg-white border-y border-border py-10 shadow-sm">
-        <div className="container">
-          <div className="grid grid-cols-2 gap-5 md:grid-cols-4">
-            {TRUST.map(({ icon: Icon, label, desc }, i) => (
-              <div
-                key={label}
-                className="group flex flex-col items-center gap-3 text-center"
-                style={{ animationDelay: `${i * 100}ms` }}
-              >
-                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/6 text-primary transition-all duration-300 group-hover:bg-primary group-hover:text-white group-hover:shadow-md">
-                  <Icon size={20} />
-                </div>
-                <div>
-                  <p className="text-sm font-semibold text-foreground">{label}</p>
-                  <p className="mt-0.5 text-xs text-muted-foreground">{desc}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      <StatsStrip />
 
       {/* ════════════════════════════════════════════════════════
           FEATURED PACKAGES
           ════════════════════════════════════════════════════════ */}
-      <section className="container py-20">
-        <div className="mb-10 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+      <section className="container py-24">
+        <div className="mb-12 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <div className="section-divider mb-3" />
             <h2 className="font-display text-3xl font-bold">Featured Packages</h2>
@@ -349,11 +317,11 @@ export default async function HomePage() {
       </section>
 
       {/* ════════════════════════════════════════════════════════
-          GALLERY — hover lift cards
+          DYNAMIC GALLERY
           ════════════════════════════════════════════════════════ */}
-      <section className="border-t border-border bg-white py-20">
+      <section className="border-t border-border bg-white py-24">
         <div className="container">
-          <div className="mb-10 text-center">
+          <div className="mb-12 text-center">
             <div className="mx-auto mb-3 section-divider" />
             <h2 className="font-display text-3xl font-bold">Experience the Journey</h2>
             <p className="mt-1 text-sm text-muted-foreground">
@@ -364,7 +332,7 @@ export default async function HomePage() {
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {GALLERY.map((item, idx) => (
               <div key={idx} className="gallery-card group relative overflow-hidden rounded-2xl shadow-md">
-                <div className="relative aspect-[4/3] w-full overflow-hidden">
+                <div className="relative aspect-[4/3] w-full overflow-hidden bg-muted">
                   <Image
                     src={item.src}
                     alt={item.title}
@@ -395,9 +363,25 @@ export default async function HomePage() {
       </section>
 
       {/* ════════════════════════════════════════════════════════
+          FAQ SECTION
+          ════════════════════════════════════════════════════════ */}
+      <section className="bg-[#FAF9F4] border-t border-border py-24">
+        <div className="container">
+          <div className="mb-12 text-center">
+            <div className="mx-auto mb-3 section-divider" />
+            <h2 className="font-display text-3xl font-bold">Frequently Asked Questions</h2>
+            <p className="mt-1 text-sm text-muted-foreground">
+              Aap ke zehan mein maujood aam sawaalat ke jawabaat
+            </p>
+          </div>
+          <FAQSection />
+        </div>
+      </section>
+
+      {/* ════════════════════════════════════════════════════════
           BOTTOM CTA BANNER
           ════════════════════════════════════════════════════════ */}
-      <section className="bg-gradient-to-r from-[#0A3622] to-[#0F5132] py-14 text-white">
+      <section className="bg-gradient-to-r from-[#0A3622] to-[#0F5132] py-16 text-white">
         <div className="container flex flex-col items-center gap-6 text-center">
           <div className="animate-float text-4xl">🕋</div>
           <h2 className="font-display text-2xl font-bold md:text-3xl">
@@ -413,7 +397,7 @@ export default async function HomePage() {
             <Button
               size="lg"
               variant="outline"
-              className="h-13 rounded-xl border-white/25 text-white hover:bg-white/10"
+              className="h-13 rounded-xl border-white/20 text-white bg-white/5 hover:bg-white/10"
               asChild
             >
               <Link href="/contact">Talk to an Advisor</Link>
